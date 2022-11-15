@@ -1,0 +1,334 @@
+ASSIGNMENT 3
+Fractional Knapsack using Dynamic Programming
+Program:
+class Item:
+    def __init__(self, value, weight):
+        self.value = value
+        self.weight = weight
+ 
+def fractionalKnapsack(W, arr):
+    arr.sort(key=lambda x: (x.value/x.weight), reverse=True)   
+ 
+    finalvalue = 0.0
+ 
+    for item in arr:
+ 
+        if item.weight <= W:
+            W -= item.weight
+            finalvalue += item.value
+ 
+        else:
+            finalvalue += item.value * W / item.weight
+            break
+     
+    return finalvalue
+ 
+ 
+# Driver Code
+if __name__ == "__main__":
+ 
+    W = 50
+    arr = [Item(60, 10), Item(100, 20), Item(120, 30)]
+ 
+    max_val = fractionalKnapsack(W, arr)
+    print(max_val)
+
+Output:
+
+
+
+
+
+
+
+
+
+
+ASSIGNMENT 4
+KnapSack Problem
+
+
+def knapSack(W, wt, val, n):
+ 
+    if n == 0 or W == 0:
+        return 0
+ 
+    if (wt[n-1] > W):
+        return knapSack(W, wt, val, n-1)
+ 
+    else:
+        return max(
+            val[n-1] + knapSack(
+                W-wt[n-1], wt, val, n-1),
+            knapSack(W, wt, val, n-1))
+ 
+val = [60, 100, 120]
+wt = [10, 20, 30]
+W = 50
+n = len(val)
+print(knapSack(W, wt, val, n))
+
+Output:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ASSIGNMENT 2
+Huffman Encoding using Greedy Approach
+Program:
+import heapq
+ 
+class node:
+    def __init__(self, freq, symbol, left=None, right=None):
+        self.freq = freq
+
+        self.symbol = symbol
+ 
+        self.left = left
+ 
+        self.right = right
+ 
+        self.huff = ''
+         
+    def __lt__(self, nxt):
+        return self.freq < nxt.freq
+         
+def printNodes(node, val=''):
+     
+    newVal = val + str(node.huff)
+
+    if(node.left):
+        printNodes(node.left, newVal)
+    if(node.right):
+        printNodes(node.right, newVal)
+
+    if(not node.left and not node.right):
+        print(f"{node.symbol} -> {newVal}")
+ 
+ 
+chars = ['a', 'b', 'c', 'd', 'e', 'f']
+ 
+freq = [ 6, 19, 22, 35, 10, 55]
+ 
+nodes = []
+ 
+for x in range(len(chars)):
+    heapq.heappush(nodes, node(freq[x], chars[x]))
+ 
+while len(nodes) > 1:
+    
+    left = heapq.heappop(nodes)
+    right = heapq.heappop(nodes)
+ 
+    left.huff = 0
+    right.huff = 1
+ 
+    newNode = node(left.freq+right.freq, left.symbol+right.symbol, left, right)
+ 
+    heapq.heappush(nodes, newNode)
+ 
+# Huffman Tree is ready!
+printNodes(nodes[0])
+
+
+Output:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ASSIGNMENT 1
+Fibonacci Series using recursive and non-recursive method
+
+Program using recursion:
+import time
+# Fibonacci series using recursion
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+ 
+ 
+t1 = time.time()
+n = int(input("Enter a number to find Fibonacci series using recursion: "))
+print(fibonacci(n))
+t2 = time.time()
+recurr_time = t2-t1
+print("Time for recursive fibonacci calculation is: ", recurr_time)
+
+Output:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Program using non-recursive method:
+def fib(n):
+    if n == 1:
+        return 1
+    elif n == 2:
+        return 1
+    fibs = 1
+    for i in range(3, n):
+        fibs += i
+    return fibs
+
+t1 = time.time()
+n = int(input("Enter a number to find Fibonacci series without using recursion: "))
+print(fib(n))
+t2 = time.time()
+non_recurr_time = t2-t1
+print("Time for non-recursive fibonacci calculation is: ", non_recurr_time)
+
+Output:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ASSIGNMENT 5
+N-Queens matrix using Backtracking
+
+Program:
+global N
+N = 4
+  
+def printSolution(board): 
+    for i in range(N):
+        for j in range(N):
+            print(board[i][j], end = " ")
+        print() 
+def isSafe(board, row, col):
+  
+    for i in range(col):
+        if board[row][i] == 1:
+            return False
+  
+    for i, j in zip(range(row, -1, -1), 
+                    range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+  
+    for i, j in zip(range(row, N, 1), 
+                    range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+  
+    return True
+  
+def solveNQUtil(board, col):      
+    if col >= N:
+        return True
+  
+    for i in range(N):
+        if isSafe(board, i, col):              
+            board[i][col] = 1  
+            if solveNQUtil(board, col + 1) == True:
+                return True  
+            board[i][col] = 0  
+    return False
+  
+def solveNQ():
+    board = [ [0, 0, 0, 0],
+              [0, 0, 0, 0],
+              [0, 0, 0, 0],
+              [0, 0, 0, 0] ]
+  
+    if solveNQUtil(board, 0) == False:
+        print ("Solution does not exist")
+        return False
+  
+    printSolution(board)
+    return True
+  
+# Driver Code
+solveNQ()
+
+
+
+Output:
+ 
